@@ -1,7 +1,7 @@
 {
   "name": "k6-load-test",
   "version": "1.0.0",
-  "description": "k6 load testing project for reqres.in API",
+  "description": "k6 load testing project for Ndosi API",
   "scripts": {
     "test": "k6 run load-test.js",
     "test-with-output": "k6 run --out json=results.json load-test.js"
