@@ -5,7 +5,7 @@ export const options = {
   vus: 10, // 10 virtual users
   duration: '30s', // run for 30 seconds
   thresholds: {
-      http_req_duration: ['p(95)<900'],
+      http_req_duration: ['p(95)<500'],
       http_req_failed: ['rate<0.01'],
     },
 };
@@ -17,7 +17,7 @@ export default function () {
   // Check that the response is successful
   check(response, {
     'status is 200': (r) => r.status === 200,
-    'response time < 500ms': (r) => r.timings.duration < 900,
+    'response time < 500ms': (r) => r.timings.duration < 500,
     'response contains data': (r) => r.json('data') !== undefined,
   });
 

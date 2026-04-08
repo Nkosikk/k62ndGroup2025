@@ -1,62 +1,57 @@
-# k6 Load Testing Project
+# Ndosi Automation Load Testing
 
-This project contains k6 load tests for the reqres.in API.
+This project contains k6 load tests for the **Ndosi Automation API**.
 
 ## Prerequisites
 
-Make sure you have k6 installed on your system:
+Make sure you have [k6](https://k6.io/) installed on your system.
 
-### macOS Installation
-```bash
-brew install k6
-```
-
-### Alternative Installation Methods
-- Download from: https://k6.io/docs/get-started/installation/
-- Or use npm: `npm install -g k6`
+### Installation Options
+- **macOS**: `brew install k6`
+- **Windows**: `choco install k6` or download the MSI from [k6.io](https://k6.io/docs/get-started/installation/)
+- **Linux**: See official [installation guide](https://k6.io/docs/get-started/installation/#linux)
+- **Node/npm**: `npm install -g k6` (though native installation is recommended)
 
 ## Test Configuration
 
-The load test is configured with:
-- **10 virtual users** (concurrent users)
-- **30 seconds duration**
-- **Target endpoint**: https://reqres.in/api/users?page=2
+The load test (`load-test.js`) is configured with the following defaults:
+- **Virtual Users (VUs)**: 10
+- **Duration**: 30 seconds
+- **Target Endpoint**: `https://www.ndosiautomation.co.za/APIDEV/testimonials?limit=50&offset=0`
+
+### Performance Thresholds
+The test will fail if:
+- **95% of requests** (p95) take longer than **500ms**.
+- **Error rate** is greater than **1%**.
 
 ## Running the Tests
 
-### Basic Test Run
+### Using npm scripts
 ```bash
-k6 run load-test.js
-```
+# Basic run
+npm test
 
-### Run with JSON Output
-```bash
+# Run with JSON results output
 npm run test-with-output
 ```
 
-### Custom Configuration
-You can override the test configuration using command line options:
-
+### Using k6 CLI directly
 ```bash
-# Run with 20 users for 60 seconds
-k6 run --vus 20 --duration 60s load-test.js
+k6 run load-test.js
 
-# Run with different stages
-k6 run --stage 10s:5 --stage 20s:10 --stage 10s:0 load-test.js
+# Override configuration
+k6 run --vus 20 --duration 1m load-test.js
 ```
 
-## Test Checks
+## Test Validations (Checks)
 
-The test includes the following validations:
-- Response status is 200
-- Response time is under 500ms
-- Response contains data
-- Response has correct page number (2)
+The script performs the following checks for every request:
+- `status is 200`: Verifies the API returned a successful response.
+- `response time < 500ms`: Verifies the individual request was fast.
+- `response contains data`: Ensures the response body has the expected 'data' field.
 
-## Results
+## Reporting
 
-After running the test, you'll see:
-- HTTP request metrics (response times, throughput)
-- Check pass/fail rates
-- Virtual user activity
-- Overall test summary
+After the test completes, the following reports are generated:
+- **Console Output**: A text summary of all metrics.
+- **HTML Summary**: A `summary.html` file containing the performance results (rendered via `handleSummary`).
